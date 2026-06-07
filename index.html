@@ -28,6 +28,12 @@
   }
   .wrap { max-width: 720px; margin: 0 auto; padding: 0 20px 64px; }
 
+  /* visually hidden, still read by screen readers */
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
+
   header.brand {
     background: var(--umich-blue);
     border-bottom: 5px solid var(--umich-maize);
@@ -60,15 +66,19 @@
     padding: 6px 14px; font-size: 13px; font-weight: 600;
     margin-bottom: 18px;
   }
-  .anon-badge svg { width: 15px; height: 15px; }
+  .anon-badge svg { width: 15px; height: 15px; flex-shrink: 0; }
 
-  fieldset { border: 0; margin: 0; padding: 0; }
+  .prompts-lead {
+    margin: 26px 0 0; font-size: 14px; color: var(--muted);
+    border-left: 3px solid var(--umich-maize); padding-left: 12px;
+  }
+
   .field { margin-top: 24px; }
-  .field:first-child { margin-top: 0; }
   label.q {
     display: block; font-weight: 700; font-size: 16px; color: var(--umich-blue);
     margin-bottom: 4px;
   }
+  .opt { font-weight: 600; font-size: 13px; color: var(--muted); }
   .hint { display: block; font-size: 13.5px; color: var(--muted); margin-bottom: 10px; }
   .required-star { color: var(--err); font-weight: 700; }
 
@@ -85,9 +95,8 @@
 
   .row { display: flex; gap: 18px; flex-wrap: wrap; }
   .row .field { flex: 1 1 240px; margin-top: 0; }
-  .grid-2 { margin-top: 0; }
 
-  .actions { margin-top: 30px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .actions { margin-top: 30px; }
   button {
     background: var(--umich-blue); color: #fff; border: 0; border-radius: 8px;
     font-size: 16px; font-weight: 700; padding: 13px 30px; cursor: pointer;
@@ -96,10 +105,9 @@
   button:hover { background: #00396e; }
   button:active { transform: translateY(1px); }
   button:disabled { background: #9aa6b2; cursor: not-allowed; }
-  .note { font-size: 13px; color: var(--muted); }
 
   .msg { display: none; padding: 14px 16px; border-radius: 8px; font-size: 14.5px; margin-top: 18px; }
-  .msg.err { display: block; background: #fdeceb; color: var(--err); border: 1px solid #f3c9c6; }
+  .msg.err { background: #fdeceb; color: var(--err); border: 1px solid #f3c9c6; }
 
   /* success state */
   #thanks { display: none; text-align: center; padding: 18px 10px 8px; }
@@ -123,75 +131,77 @@
   <header class="brand">
     <div class="inner">
       <p class="eyebrow">University of Michigan &middot; Department of Urology</p>
-      <h1>Confidential Feedback for the Chair</h1>
+      <h1>Anonymous Feedback for the Chair</h1>
     </div>
   </header>
 
   <div class="wrap">
-    <div class="card" id="formCard">
-      <span class="anon-badge">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        This survey is anonymous &mdash; no names, emails, or identifying data are collected.
-      </span>
+    <div class="card">
+      <div id="formContent">
+        <span class="anon-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          This survey is anonymous &mdash; no names, emails, or identifying data are collected.
+        </span>
 
-      <div class="intro">
-        <p>Faculty input helps Dr.&nbsp;Palapattu lead the department most effectively. Please share candid, constructive feedback using the three prompts below.</p>
-        <p>Your responses are submitted anonymously and aggregated. There is no need to identify yourself, and no identifying information is recorded.</p>
+        <div class="intro">
+          <p>Faculty input helps Dr.&nbsp;Palapattu lead the department most effectively. Please share candid, constructive feedback using the three prompts below.</p>
+        </div>
+
+        <form id="surveyForm" autocomplete="off" style="margin-top:22px;">
+          <div class="row">
+            <div class="field">
+              <label class="q" for="rank">Academic rank <span class="required-star" aria-hidden="true">*</span><span class="sr-only">(required)</span></label>
+              <select id="rank" name="rank">
+                <option value="" disabled selected>Select&hellip;</option>
+                <option>Assistant Professor</option>
+                <option>Associate Professor</option>
+                <option>Professor</option>
+                <option>Prefer not to say</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="q" for="focus">Primary focus <span class="required-star" aria-hidden="true">*</span><span class="sr-only">(required)</span></label>
+              <select id="focus" name="focus">
+                <option value="" disabled selected>Select&hellip;</option>
+                <option>Primarily clinical</option>
+                <option>Primarily research</option>
+                <option>Combination of clinical and research</option>
+                <option>Prefer not to say</option>
+              </select>
+            </div>
+          </div>
+
+          <p class="prompts-lead">Please answer at least one of the three prompts below. All three are optional.</p>
+
+          <div class="field">
+            <label class="q" for="keep">What should Dr.&nbsp;Palapattu <strong>keep</strong> doing? <span class="opt">(optional)</span></label>
+            <span class="hint">What is working well that you'd like to see continue?</span>
+            <textarea id="keep" name="keep"></textarea>
+          </div>
+
+          <div class="field">
+            <label class="q" for="start">What should Dr.&nbsp;Palapattu <strong>start</strong> doing? <span class="opt">(optional)</span></label>
+            <span class="hint">What new actions, priorities, or behaviors would help the department?</span>
+            <textarea id="start" name="start"></textarea>
+          </div>
+
+          <div class="field">
+            <label class="q" for="stop">What should Dr.&nbsp;Palapattu <strong>stop</strong> doing? <span class="opt">(optional)</span></label>
+            <span class="hint">What is getting in the way that should be discontinued?</span>
+            <textarea id="stop" name="stop"></textarea>
+          </div>
+
+          <div class="msg err" id="errMsg" role="alert"></div>
+
+          <div class="actions">
+            <button type="submit" id="submitBtn">Submit anonymously</button>
+          </div>
+        </form>
       </div>
-
-      <form id="surveyForm" autocomplete="off" style="margin-top:22px;">
-        <div class="row">
-          <div class="field">
-            <label class="q" for="rank">Academic rank <span class="required-star">*</span></label>
-            <select id="rank" name="rank" required>
-              <option value="" disabled selected>Select&hellip;</option>
-              <option>Assistant Professor</option>
-              <option>Associate Professor</option>
-              <option>Professor</option>
-              <option>Prefer not to say</option>
-            </select>
-          </div>
-          <div class="field">
-            <label class="q" for="focus">Primary focus <span class="required-star">*</span></label>
-            <select id="focus" name="focus" required>
-              <option value="" disabled selected>Select&hellip;</option>
-              <option>Primarily clinical</option>
-              <option>Primarily research</option>
-              <option>Combination of clinical and research</option>
-              <option>Prefer not to say</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="q" for="keep">What should Dr.&nbsp;Palapattu <strong>keep</strong> doing?</label>
-          <span class="hint">What is working well that you'd like to see continue?</span>
-          <textarea id="keep" name="keep" placeholder="Share what's working well&hellip;"></textarea>
-        </div>
-
-        <div class="field">
-          <label class="q" for="start">What should Dr.&nbsp;Palapattu <strong>start</strong> doing?</label>
-          <span class="hint">What new actions, priorities, or behaviors would help the department?</span>
-          <textarea id="start" name="start" placeholder="Share what you'd like to see begin&hellip;"></textarea>
-        </div>
-
-        <div class="field">
-          <label class="q" for="stop">What should Dr.&nbsp;Palapattu <strong>stop</strong> doing?</label>
-          <span class="hint">What is getting in the way that should be discontinued?</span>
-          <textarea id="stop" name="stop" placeholder="Share what should be discontinued&hellip;"></textarea>
-        </div>
-
-        <div class="msg err" id="errMsg"></div>
-
-        <div class="actions">
-          <button type="submit" id="submitBtn">Submit anonymously</button>
-          <span class="note">Please complete at least one of the three feedback prompts.</span>
-        </div>
-      </form>
 
       <div id="thanks">
         <div class="check">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
         </div>
         <h2>Thank you</h2>
         <p>Your anonymous feedback has been recorded. We appreciate you taking the time to help strengthen the department.</p>
@@ -202,20 +212,21 @@
   </div>
 
 <script>
-  // ============================================================
-  //  PASTE YOUR APPS SCRIPT WEB APP URL BETWEEN THE QUOTES BELOW
-  //  (see LAUNCH.md, Step 3). It looks like:
-  //  https://script.google.com/macros/s/AKfyc.../exec
-  // ============================================================
+  // Apps Script Web App endpoint (deployed with access: Anyone). See LAUNCH.md.
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwtNv8EOHk0dVdTuJv8X2B3pizPiDK-3BaAfMDyLH3M_rTokpjZzSxZcTCxYCS_PXz4/exec";
 
   const form = document.getElementById("surveyForm");
   const btn = document.getElementById("submitBtn");
   const errMsg = document.getElementById("errMsg");
 
-  function showError(text) {
+  function showError(text, fieldId) {
     errMsg.textContent = text;
     errMsg.style.display = "block";
+    if (fieldId) {
+      const el = document.getElementById(fieldId);
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+      el.focus({ preventScroll: true });
+    }
   }
 
   form.addEventListener("submit", async function (e) {
@@ -228,16 +239,16 @@
     const rank = document.getElementById("rank").value;
     const focus = document.getElementById("focus").value;
 
-    if (!rank || !focus) {
-      showError("Please select your academic rank and primary focus.");
+    if (!rank) {
+      showError("Please select your academic rank.", "rank");
+      return;
+    }
+    if (!focus) {
+      showError("Please select your primary focus.", "focus");
       return;
     }
     if (!keep && !start && !stop) {
-      showError("Please answer at least one of the three feedback prompts before submitting.");
-      return;
-    }
-    if (!SCRIPT_URL || SCRIPT_URL.indexOf("PASTE_YOUR") === 0) {
-      showError("This survey is not yet connected to its data destination. Please contact the survey administrator.");
+      showError("Please answer at least one of the three feedback prompts before submitting.", "keep");
       return;
     }
 
@@ -251,9 +262,10 @@
 
     try {
       await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body });
-      document.getElementById("surveyForm").style.display = "none";
-      errMsg.style.display = "none";
-      document.getElementById("thanks").style.display = "block";
+      document.getElementById("formContent").style.display = "none";
+      const thanks = document.getElementById("thanks");
+      thanks.style.display = "block";
+      thanks.scrollIntoView({ behavior: "smooth", block: "center" });
     } catch (err) {
       btn.disabled = false;
       btn.textContent = "Submit anonymously";
