@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Chair Feedback &mdash; Department of Urology</title>
+<style>
+  :root {
+    --umich-blue: #00274C;
+    --umich-maize: #FFCB05;
+    --ink: #1a1a1a;
+    --muted: #5f6b76;
+    --line: #e3e7eb;
+    --bg: #f4f6f8;
+    --card: #ffffff;
+    --ok: #1d7a46;
+    --err: #b3261e;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 20px 64px; }
+
+  header.brand {
+    background: var(--umich-blue);
+    border-bottom: 5px solid var(--umich-maize);
+    color: #fff;
+    padding: 28px 0 26px;
+  }
+  header.brand .inner { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+  header.brand .eyebrow {
+    font-size: 12px; letter-spacing: 1.6px; text-transform: uppercase;
+    color: var(--umich-maize); font-weight: 700; margin: 0 0 6px;
+  }
+  header.brand h1 { font-size: 26px; line-height: 1.2; margin: 0; font-weight: 700; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 28px 30px;
+    margin-top: 26px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  .intro p { margin: 0 0 12px; color: #2a2f35; }
+  .intro p:last-child { margin-bottom: 0; }
+
+  .anon-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: #eef6f0; color: var(--ok);
+    border: 1px solid #cde6d6; border-radius: 999px;
+    padding: 6px 14px; font-size: 13px; font-weight: 600;
+    margin-bottom: 18px;
+  }
+  .anon-badge svg { width: 15px; height: 15px; }
+
+  fieldset { border: 0; margin: 0; padding: 0; }
+  .field { margin-top: 24px; }
+  .field:first-child { margin-top: 0; }
+  label.q {
+    display: block; font-weight: 700; font-size: 16px; color: var(--umich-blue);
+    margin-bottom: 4px;
+  }
+  .hint { display: block; font-size: 13.5px; color: var(--muted); margin-bottom: 10px; }
+  .required-star { color: var(--err); font-weight: 700; }
+
+  select, textarea {
+    width: 100%; font-family: inherit; font-size: 15px; color: var(--ink);
+    border: 1px solid #c9d0d7; border-radius: 8px; background: #fff;
+    padding: 11px 12px; transition: border-color .15s, box-shadow .15s;
+  }
+  select:focus, textarea:focus {
+    outline: none; border-color: var(--umich-blue);
+    box-shadow: 0 0 0 3px rgba(0,39,76,0.12);
+  }
+  textarea { min-height: 110px; resize: vertical; }
+
+  .row { display: flex; gap: 18px; flex-wrap: wrap; }
+  .row .field { flex: 1 1 240px; margin-top: 0; }
+  .grid-2 { margin-top: 0; }
+
+  .actions { margin-top: 30px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  button {
+    background: var(--umich-blue); color: #fff; border: 0; border-radius: 8px;
+    font-size: 16px; font-weight: 700; padding: 13px 30px; cursor: pointer;
+    transition: background .15s, transform .05s;
+  }
+  button:hover { background: #00396e; }
+  button:active { transform: translateY(1px); }
+  button:disabled { background: #9aa6b2; cursor: not-allowed; }
+  .note { font-size: 13px; color: var(--muted); }
+
+  .msg { display: none; padding: 14px 16px; border-radius: 8px; font-size: 14.5px; margin-top: 18px; }
+  .msg.err { display: block; background: #fdeceb; color: var(--err); border: 1px solid #f3c9c6; }
+
+  /* success state */
+  #thanks { display: none; text-align: center; padding: 18px 10px 8px; }
+  #thanks .check {
+    width: 58px; height: 58px; border-radius: 50%; background: #eef6f0;
+    display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;
+  }
+  #thanks .check svg { width: 30px; height: 30px; stroke: var(--ok); }
+  #thanks h2 { color: var(--umich-blue); margin: 0 0 8px; font-size: 22px; }
+  #thanks p { color: var(--muted); margin: 0 auto; max-width: 440px; }
+
+  footer.foot { text-align: center; color: var(--muted); font-size: 12.5px; margin-top: 30px; }
+
+  @media (max-width: 520px) {
+    .card { padding: 22px 18px; }
+    header.brand h1 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+  <header class="brand">
+    <div class="inner">
+      <p class="eyebrow">University of Michigan &middot; Department of Urology</p>
+      <h1>Confidential Feedback for the Chair</h1>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="card" id="formCard">
+      <span class="anon-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        This survey is anonymous &mdash; no names, emails, or identifying data are collected.
+      </span>
+
+      <div class="intro">
+        <p>Faculty input helps Dr.&nbsp;Palapattu lead the department most effectively. Please share candid, constructive feedback using the three prompts below.</p>
+        <p>Your responses are submitted anonymously and aggregated. There is no need to identify yourself, and no identifying information is recorded.</p>
+      </div>
+
+      <form id="surveyForm" autocomplete="off" style="margin-top:22px;">
+        <div class="row">
+          <div class="field">
+            <label class="q" for="rank">Academic rank <span class="required-star">*</span></label>
+            <select id="rank" name="rank" required>
+              <option value="" disabled selected>Select&hellip;</option>
+              <option>Assistant Professor</option>
+              <option>Associate Professor</option>
+              <option>Professor</option>
+              <option>Prefer not to say</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="q" for="focus">Primary focus <span class="required-star">*</span></label>
+            <select id="focus" name="focus" required>
+              <option value="" disabled selected>Select&hellip;</option>
+              <option>Primarily clinical</option>
+              <option>Primarily research</option>
+              <option>Combination of clinical and research</option>
+              <option>Prefer not to say</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="q" for="keep">What should Dr.&nbsp;Palapattu <strong>keep</strong> doing?</label>
+          <span class="hint">What is working well that you'd like to see continue?</span>
+          <textarea id="keep" name="keep" placeholder="Share what's working well&hellip;"></textarea>
+        </div>
+
+        <div class="field">
+          <label class="q" for="start">What should Dr.&nbsp;Palapattu <strong>start</strong> doing?</label>
+          <span class="hint">What new actions, priorities, or behaviors would help the department?</span>
+          <textarea id="start" name="start" placeholder="Share what you'd like to see begin&hellip;"></textarea>
+        </div>
+
+        <div class="field">
+          <label class="q" for="stop">What should Dr.&nbsp;Palapattu <strong>stop</strong> doing?</label>
+          <span class="hint">What is getting in the way that should be discontinued?</span>
+          <textarea id="stop" name="stop" placeholder="Share what should be discontinued&hellip;"></textarea>
+        </div>
+
+        <div class="msg err" id="errMsg"></div>
+
+        <div class="actions">
+          <button type="submit" id="submitBtn">Submit anonymously</button>
+          <span class="note">Please complete at least one of the three feedback prompts.</span>
+        </div>
+      </form>
+
+      <div id="thanks">
+        <div class="check">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+        </div>
+        <h2>Thank you</h2>
+        <p>Your anonymous feedback has been recorded. We appreciate you taking the time to help strengthen the department.</p>
+      </div>
+    </div>
+
+    <footer class="foot">University of Michigan Department of Urology &middot; Responses are anonymous and aggregated</footer>
+  </div>
+
+<script>
+  // ============================================================
+  //  PASTE YOUR APPS SCRIPT WEB APP URL BETWEEN THE QUOTES BELOW
+  //  (see LAUNCH.md, Step 3). It looks like:
+  //  https://script.google.com/macros/s/AKfyc.../exec
+  // ============================================================
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwtNv8EOHk0dVdTuJv8X2B3pizPiDK-3BaAfMDyLH3M_rTokpjZzSxZcTCxYCS_PXz4/exec";
+
+  const form = document.getElementById("surveyForm");
+  const btn = document.getElementById("submitBtn");
+  const errMsg = document.getElementById("errMsg");
+
+  function showError(text) {
+    errMsg.textContent = text;
+    errMsg.style.display = "block";
+  }
+
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+    errMsg.style.display = "none";
+
+    const keep = document.getElementById("keep").value.trim();
+    const start = document.getElementById("start").value.trim();
+    const stop = document.getElementById("stop").value.trim();
+    const rank = document.getElementById("rank").value;
+    const focus = document.getElementById("focus").value;
+
+    if (!rank || !focus) {
+      showError("Please select your academic rank and primary focus.");
+      return;
+    }
+    if (!keep && !start && !stop) {
+      showError("Please answer at least one of the three feedback prompts before submitting.");
+      return;
+    }
+    if (!SCRIPT_URL || SCRIPT_URL.indexOf("PASTE_YOUR") === 0) {
+      showError("This survey is not yet connected to its data destination. Please contact the survey administrator.");
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = "Submitting…";
+
+    // application/x-www-form-urlencoded is a "simple" request, so it avoids a
+    // CORS preflight. We use no-cors because Apps Script doesn't return CORS
+    // headers; the row is still written. We optimistically confirm success.
+    const body = new URLSearchParams({ rank, focus, keep, start, stop });
+
+    try {
+      await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body });
+      document.getElementById("surveyForm").style.display = "none";
+      errMsg.style.display = "none";
+      document.getElementById("thanks").style.display = "block";
+    } catch (err) {
+      btn.disabled = false;
+      btn.textContent = "Submit anonymously";
+      showError("Something went wrong submitting your response. Please try again, or contact the survey administrator if it persists.");
+    }
+  });
+</script>
+</body>
+</html>
